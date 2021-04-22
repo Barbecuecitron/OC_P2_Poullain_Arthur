@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup as BS
-# import csv
 
 
 def main():
@@ -12,6 +11,7 @@ def main():
 		soup = BS(response.text, 'lxml')
 		book['product_page_url'] = response.url
 		book['title'] = soup.find('h1').text
+		# Does it have a description ?
 		if soup.find('div', {'id': 'product_description'}) is None:
 			book['product_description'] = 'No desc available'
 		else:
@@ -42,10 +42,10 @@ def main():
 				# print(specs_to_keep[spec] + ' = ' + desc_specs[index].text)
 				book[specs_to_keep[spec]] = desc_specs[index].text
 			index += 1
-
+		# Translation of weird symbol before '£'
 		book['price_including_tax'] = book['price_including_tax'].replace('Â', '')
 		book['price_excluding_tax'] = book['price_excluding_tax'].replace('Â', '')
-
+		# Making the function return the book dict so I can retrieve it later on
 		return book
 
 
