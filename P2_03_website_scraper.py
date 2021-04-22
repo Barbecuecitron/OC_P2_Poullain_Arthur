@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as BS
 import csv
-
+# Version originale
 websiteURL = 'http://books.toscrape.com/'
 blacklisted = 'http://books.toscrape.com/catalogue/category/books_1/index.html'
 categories = []
