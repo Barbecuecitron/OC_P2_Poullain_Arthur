@@ -83,7 +83,6 @@ def send_page_to_scraper_and_try_to_find_next(url):
 
 def main():
 	# Initializing a book list to use as parameter for recursivity
-	recursive_booklist = []
 	all_books = send_page_to_scraper_and_try_to_find_next('https://books.toscrape.com/catalogue/category/books/default_15/index.html')
 	print(all_books)
 
