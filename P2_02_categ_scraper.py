@@ -46,7 +46,7 @@ def book_analyzer(target_url):
 		# Making the function return the book dict so I can retrieve it later on
 		return book
 
-# Sends every book from the defined page to the analyzer and returns the infos
+# Sends every book from the defined page to the
 def send_books_from_page_to_analyzer(link):
 	booksfromcategory = []
 	base_link = 'http://books.toscrape.com/catalogue/'
@@ -62,31 +62,29 @@ def send_books_from_page_to_analyzer(link):
 	return booksfromcategory
 
 
-def scan_all_books_from_page(mypage):
-	books_from_page = send_books_from_page_to_analyzer(mypage)
-	return books_from_page
-
-
-# Analyze our page and goes to the next one if it featyres a next button
-def send_page_to_scraper_and_try_to_find_next(url, recursive_booklist):
-	booklist = recursive_booklist
+# Analyze our page and goes to the next one if it features a next button
+def send_page_to_scraper_and_try_to_find_next(url):
 	response = requests.get(url)
+	category_link ="https://books.toscrape.com/catalogue/category/books/"
 	if response.ok:
 		soup = BS(response.text, 'lxml')
-		recursive_booklist.append(scan_all_books_from_page(url))
+		booklist = send_books_from_page_to_analyzer(url)
 		# Si il y a un bouton :
 		if soup.find('li', {'class': 'next'}) is not None:
-			nextpagebutton = soup.find('li', {'class': 'next'}).find('a')['href']
-			newurl = url.replace('index.html', nextpagebutton)
-			send_page_to_scraper_and_try_to_find_next(newurl, booklist)
-		return recursive_booklist
+			url_split = url.split('/')
+			end_of_url = url_split[-1]
+			next_page_button = soup.find('li', {'class': 'next'}).find('a')['href']
+			next_page_url = url.replace(end_of_url, next_page_button)
+			#newurl = url.replace('index.html', nextpagebutton)
+			#print("Mon url = ", url)
+			booklist.extend(send_page_to_scraper_and_try_to_find_next(next_page_url))
+		return booklist
 
 
 def main():
 	# Initializing a book list to use as parameter for recursivity
 	recursive_booklist = []
-	all_books = send_page_to_scraper_and_try_to_find_next(
-		'http://books.toscrape.com/catalogue/category/books/romance_8/index.html', recursive_booklist)
+	all_books = send_page_to_scraper_and_try_to_find_next('https://books.toscrape.com/catalogue/category/books/default_15/index.html')
 	print(all_books)
 
 
