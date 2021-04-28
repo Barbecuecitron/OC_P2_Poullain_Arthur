@@ -3,12 +3,13 @@ import csv
 from bs4 import BeautifulSoup as BS
 import os
 
+
 # Analyze a book's product page
 def book_analyzer(target_url):
 	response = requests.get(target_url)
-	book = {}
 	# Validity check
 	if response.ok:
+		book = {}
 		soup = BS(response.text, 'lxml')
 		book['product_page_url'] = response.url
 		book['title'] = soup.find('h1').text
@@ -44,14 +45,11 @@ def book_analyzer(target_url):
 
 		book['price_including_tax'] = book['price_including_tax'].replace('Â', '')
 		book['price_excluding_tax'] = book['price_excluding_tax'].replace('Â', '')
-		# Making the function return the book dict so I can retrieve it later on
-
-		# Write CSV at the same time to retrieve data while the program is on
-
+		# Returns the books dict
 		return book
 
 
-# Sends every book from the defined page to the
+# Sends every book from the defined page to the Analyzer
 def send_books_from_page_to_analyzer(link):
 	booksfromcategory = []
 	base_link = 'http://books.toscrape.com/catalogue/'
@@ -82,6 +80,7 @@ def send_page_to_scraper_and_try_to_find_next(url):
 		return booklist
 
 
+	# To check / create folders dynamically
 def create_folder(directory):
 	try:
 		if not os.path.exists(directory):
@@ -90,21 +89,23 @@ def create_folder(directory):
 		print('ERROR while trying to create :' + directory)
 
 
-def download_product_image(img_url,book_title,category):
+	# Handles our images downloading
+def download_product_image(img_url, book_title, category):
 	response = requests.get(img_url)
 	file = open('books_images\\' + category + '\\' + book_title + '.jpg', 'wb')
 	file.write(response.content)
 	file.close()
 
-# So we create files and folders based on X string smoothly
+
+# Cleans our strings so we can use them as file/folder names without any glitch.
 def clean_str(string):
-	stripped_string = string.replace(' ','_')
+	stripped_string = string.replace(' ', '_')
 	pretty_string = ''.join(char for char in stripped_string if char.isalnum() or char == '_')
-	print("PSTRING = " + pretty_string)
 	return pretty_string
 
 
-
+# Used to store our data into csv files.
+# Also calls our img downloader on every book.
 def write_in_csv(books):
 	header = []
 	rows = []
@@ -117,7 +118,7 @@ def write_in_csv(books):
 	# Adding rows from books values
 	for book in books:
 		rows.append(book)
-		download_product_image(book['image_url'],clean_str(book['title']),book['category'])
+		download_product_image(book['image_url'], clean_str(book['title']), book['category'])
 
 	with open('books_specs\\' + file_title + '.csv', 'w', encoding='UTF8', newline='') as f:
 		writer = csv.DictWriter(f, fieldnames=header)
@@ -125,19 +126,21 @@ def write_in_csv(books):
 		writer.writerows(rows)
 
 
+	# Analyzes a category, creates an imgs folder for it, calls csv writer function
 def analyze_category(category_url):
 	category_books = send_page_to_scraper_and_try_to_find_next(category_url)
 	# Creating a category folder for our books imgs before we write anything inside using books[0] as a sample
-	create_folder('books_images\\'+ category_books[0]['category'])
+	create_folder('books_images\\' + category_books[0]['category'])
 	write_in_csv(category_books)
 	return category_books
 
 
 def main():
-	# Initializing our imgs folder
+	# Initializing our folders
 	create_folder('./books_images')
 	create_folder('./books_specs')
 	website_url = "https://books.toscrape.com/"
+	# Our list containing every book from the website
 	all_books = []
 	response = requests.get(website_url)
 	number_of_categories = 0
@@ -148,7 +151,7 @@ def main():
 		for i in range(1, len(navlist)):
 			number_of_categories += 1
 			all_books.extend(analyze_category(website_url + navlist[i]['href']))
-		print('Félicitations Mr Poullain !')
+
 
 if __name__ == '__main__':
 	main()
