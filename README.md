@@ -11,7 +11,6 @@ The required libraries versions are listed in the requirements.txt
 ---
 ## Contributors
 * Arthur P
-* Benjamin D
 ---
 ## License & copyright
 © Absolutely no Copyrights 
