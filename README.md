@@ -1,6 +1,6 @@
 # OpenclassroomProjets Web-Scraping
----
 Version 1.0.0
+---
 Web scraper guide for https://books.toscrape.com/
 
 # How to use ?
