@@ -14,4 +14,4 @@ The required libraries versions are listed in the requirements.txt
 * Benjamin D
 ---
 ## License & copyright
-© LicenseExample
+© Absolutely no Copyrights 
