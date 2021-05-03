@@ -1,7 +1,7 @@
 # OpenclassroomProjets Web-Scraping
 Version 1.0.0
 ---
-Web scraper guide for https://books.toscrape.com/
+Web scraper for https://books.toscrape.com/
 
 # How to use ?
 The required libraries versions are listed in the requirements.txt
