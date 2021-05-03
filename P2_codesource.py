@@ -143,15 +143,14 @@ def main():
 	# Our list containing every book from the website
 	all_books = []
 	response = requests.get(website_url)
-	number_of_categories = 0
 	if response.ok:
 		soup = BS(response.text, 'lxml')
 		navlist = soup.find('ul', {'class': 'nav nav-list'}).findAll('a')
 
 		for i in range(1, len(navlist)):
-			number_of_categories += 1
 			all_books.extend(analyze_category(website_url + navlist[i]['href']))
 
+			
 
 if __name__ == '__main__':
 	main()
