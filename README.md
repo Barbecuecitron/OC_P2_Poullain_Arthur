@@ -10,7 +10,8 @@ The required libraries versions are listed in the requirements.txt
 * The csv files containing books caracteristics will be stored in the 'books_specs' folder.
 ---
 ## Contributors
+* Arthur P
 * Benjamin D
 ---
 ## License & copyright
-© Arthur P, OpenClassrooms Python Student
+© LicenseExample
