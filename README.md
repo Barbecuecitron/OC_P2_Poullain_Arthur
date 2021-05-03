@@ -8,5 +8,8 @@ The required libraries versions are listed in the requirements.txt
 * Saved images will be stored in the 'books_images' folder.
 * The csv files containing books caracteristics will be stored in the 'books_specs' folder.
 ---
+## Contributors
+* Benjamin D
+---
 ## License & copyright
-© Arthur Poullain, OpenClassrooms Python Student
+© Arthur P, OpenClassrooms Python Student
